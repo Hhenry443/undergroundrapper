@@ -1,16 +1,60 @@
 <!DOCTYPE html>
 <html>
-<body>
+<head>
+    <meta charset="UTF-8">
+    <title>Beat the UK underground</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
 
-<h1>Happy</h1>
-<p id="happiness"></p>
+<body class="h-screen">
+    <div id="content" class="w-full h-full flex flex-col items-center justify-center bg-red-100 space-y-4">
+        <div id="stats" class="flex space-x-2">
+            <h1>Happy</h1>
+            <p id="happiness" class="mr-4"></p>
 
-<h1>Hunger</h1>
-<p id="hungry"></p>
+            <h1>Hunger</h1>
+            <p id="hungry" class="mr-4"></p>
 
-<h1>Pain</h1>
-<p id="pain"></p>
+            <h1>Pain</h1>
+            <p id="pain" class="mr-4"></p>
+        </div>
 
+        <div id="controls" class="flex space-x-4">
+            <a id="tauntButton" class="w-16 h-8 bg-blue-200 flex items-center justify-center" onclick="currentRapper.taunt()">
+                Taunt
+            </a>
+
+            <a id="feedButton" class="w-16 h-8 bg-blue-200 flex items-center justify-center" onclick="UIManager.toggleFeedMenu()">
+                Feed
+            </a>
+
+            <a id="yellButton" class="w-16 h-8 bg-blue-200 flex items-center justify-center" onclick="currentRapper.yell()">
+                Yell
+            </a>
+
+            <a id="hitButton" class="w-16 h-8 bg-blue-200 flex items-center justify-center" onclick="currentRapper.hit()">
+                Hit
+            </a>
+        </div>
+
+        <div id="feedMenu" class="flex space-x-4 hidden">
+            <a class="w-16 h-8 bg-green-200 flex items-center justify-center" onclick="currentRapper.feed('Fried Chicken')">
+                Fried Chicken
+            </a>
+
+            <a class="w-16 h-8 bg-green-200 flex items-center justify-center" onclick="currentRapper.feed('Bread')">
+                Bread
+            </a>
+
+            <a class="w-16 h-8 bg-green-200 flex items-center justify-center" onclick="currentRapper.feed('Spaghetti')">
+                Spaghetti
+            </a>
+
+            <a class="w-16 h-8 bg-green-200 flex items-center justify-center" onclick="currentRapper.feed('Slop')">
+                Slop
+            </a>
+        </div>
+    </div>
 <script src="./main.js"></script>
 </body>
 </html> 

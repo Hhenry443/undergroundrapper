@@ -5,21 +5,59 @@ class Rapper {
         this.pain = pain;
         this.name = name;
     }
-    
-    eat(food){
+
+    taunt(){
+        this.happy = this.happy - 20
+        // Prevent negative happiness
+        if (this.happy < 0) this.happy = 0;
+    }
+
+    feed(food){
         switch (food){
             case "Fried Chicken":
                 this.hungry = this.hungry - 10;
+                this.happy = this.happy + 10
                 break;
             case "Bread":
                 this.hungry = this.hungry - 5;
+                this.happy = this.happy + 10
                 break;
             case "Spaghetti":
                 this.hungry = this.hungry - 15;
+                this.happy = this.happy + 10
+                break;
+            case "Slop":
+                this.hungry = this.hungry - 10;
+                this.happy = this.happy - 10
+                this.pain = this.pain + 5
                 break;
         }
-        // Prevent negative hunger
+        // Prevent negative hunger & happy
         if (this.hungry < 0) this.hungry = 0;
+        if (this.happy < 0) this.happy = 0;
+        if (this.happy > 100) this.happy = 100;
+        if (this.pain > 100) this.pain = 100;
+    }
+
+    yell() {
+        // yell decreases happiness and gives pain. 
+        this.happy = this.happy - 20
+        this.pain = this.pain + 5
+
+        // Prevent negative values
+        if (this.happy < 0) this.happy = 0;
+        if (this.pain > 100) this.pain = 100;
+    }
+
+    hit() {
+        // hit decreases happiness and gives pain. 
+        // opposite values to yelling
+        this.happy = this.happy - 5
+        this.pain = this.pain + 20
+
+        // Prevent negative values
+        if (this.happy < 0) this.happy = 0;
+        if (this.pain > 100) this.pain = 100;
     }
     
     update() {
@@ -45,6 +83,7 @@ class UI {
         this.happiness = document.getElementById('happiness');
         this.hungry = document.getElementById('hungry');
         this.pain = document.getElementById('pain');
+        this.feedMenu = document.getElementById('feedMenu')
         this.rapperSprite = document.getElementById('rapper-sprite');
     }
     
@@ -64,6 +103,10 @@ class UI {
         } else {
             this.rapperSprite.className = 'rapper normal';
         }
+    }
+
+    toggleFeedMenu() {
+        this.feedMenu.classList.toggle('hidden')
     }
 }
 
@@ -93,12 +136,12 @@ class GameLoop {
             }
         }, 2500);
 
-        // Set up interval to update every 0.5 seconds (500ms) for UI
+        // Set up interval to update every 10ms for UI
         this.rapperStatsInterval = setInterval(() => {
             if (this.isRunning) {
-                this.ui.update(this.rapper);
+                    this.ui.update(this.rapper);
             }
-        }, 500);
+        }, 10);
     }
     
     stop() {
