@@ -17,14 +17,17 @@ class Rapper {
             case "Fried Chicken":
                 this.hungry = this.hungry - 10;
                 this.happy = this.happy + 10
+                this.pain = this.pain - 5
                 break;
             case "Bread":
                 this.hungry = this.hungry - 5;
                 this.happy = this.happy + 10
+                this.pain = this.pain - 5
                 break;
             case "Spaghetti":
                 this.hungry = this.hungry - 15;
                 this.happy = this.happy + 10
+                this.pain = this.pain - 5
                 break;
             case "Slop":
                 this.hungry = this.hungry - 10;
@@ -37,6 +40,7 @@ class Rapper {
         if (this.happy < 0) this.happy = 0;
         if (this.happy > 100) this.happy = 100;
         if (this.pain > 100) this.pain = 100;
+        if (this.pain < 0) this.pain = 0;
     }
 
     yell() {
@@ -66,7 +70,7 @@ class Rapper {
     }
     
     decreaseStats() {
-        // Update stats every 5 seconds
+        // Update stats every 2.5 seconds
         this.happy--;
         this.hungry++;
         this.pain--;
@@ -84,24 +88,47 @@ class UI {
         this.hungry = document.getElementById('hungry');
         this.pain = document.getElementById('pain');
         this.feedMenu = document.getElementById('feedMenu')
-        this.rapperSprite = document.getElementById('rapper-sprite');
+        this.rapperSprite = document.getElementById('rapperSprite');
     }
     
     update(rapper) {
         this.happiness.innerText = `${rapper.happy}`;
         this.hungry.innerText = `${rapper.hungry}`;
         this.pain.innerText = `${rapper.pain}`;
-        // this.updateRapperAnimation(rapper);
+        this.updateRapperAnimation(rapper);
     }
     
     updateRapperAnimation(rapper) {
         // Change sprite based on rapper state
-        if (rapper.hungry > 80) {
-            this.rapperSprite.className = 'rapper hungry';
-        } else if (rapper.happy > 80) {
-            this.rapperSprite.className = 'rapper happy';
+        // 9 States. All beautiful
+        // Low is below 35, high is above 60
+
+        if (rapper.happy > 50 & rapper.hungry < 50 & rapper.pain < 50) {
+            // Rapper really happy
+            this.rapperSprite.src = './fakeminkSprites/fakeminkPerfect.png';
+        } else if (rapper.happy > 50 & rapper.hungry > 50 & rapper.pain < 50) {
+            // Rapper hungry
+            this.rapperSprite.src = './fakeminkSprites/fakeminkHungry.png';
+        } else if (rapper.happy > 50 & rapper.hungry < 50 & rapper.pain > 50) {
+            // Rapper Hurt but happy
+            this.rapperSprite.src = './fakeminkSprites/fakeminkHurtButHappy.png';
+        } else if (rapper.happy < 50 & rapper.hungry < 50 & rapper.pain < 50) {
+            // Rapper Sad
+            this.rapperSprite.src = './fakeminkSprites/fakeminkSad.png';
+        } else if (rapper.happy < 50 & rapper.hungry > 50 & rapper.pain < 50) {
+            // Rapper Hangry
+            this.rapperSprite.src = './fakeminkSprites/fakeminkHangry.png';
+        } else if (rapper.happy < 50 & rapper.hungry < 50 & rapper.pain > 50) {
+            // Rapper Sad Pain
+            this.rapperSprite.src = './fakeminkSprites/fakeminkSadPain.png';
+        } else if (rapper.happy > 50 & rapper.hungry > 50 & rapper.pain > 50) {
+            // Rapper Pain but Happy
+            this.rapperSprite.src = './fakeminkSprites/fakeminkPainButHappy.png';
+        } else if (rapper.happy < 50 & rapper.hungry > 50 & rapper.pain > 50) {
+            // Rapper Awful
+            this.rapperSprite.src = './fakeminkSprites/fakeminkAwful.png';
         } else {
-            this.rapperSprite.className = 'rapper normal';
+            this.rapperSprite.src = './fakeminkSprites/fakeminkNormal.png';
         }
     }
 
@@ -128,13 +155,13 @@ class GameLoop {
         this.rapper.update();
         this.ui.update(this.rapper);
         
-        // Set up interval to update every 2.5 seconds (2500ms) for rapper stats
+        // Set up interval to update every 1000ms for rapper stats
         this.rapperStatsInterval = setInterval(() => {
             if (this.isRunning) {
                 this.rapper.update();
                 this.ui.update(this.rapper);
             }
-        }, 2500);
+        }, 1000);
 
         // Set up interval to update every 10ms for UI
         this.rapperStatsInterval = setInterval(() => {
@@ -154,7 +181,7 @@ class GameLoop {
 }
 
 // Initialize the game
-var currentRapper = new Rapper(100, 0, 0, "Fakemink");
+var currentRapper = new Rapper(100, 25, 0, "Fakemink");
 var UIManager = new UI();
 var gameLoop = new GameLoop(currentRapper, UIManager);
 
